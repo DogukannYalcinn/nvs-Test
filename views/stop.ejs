@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Stop Page</title>
+    <style>
+        .stop{
+            background-color: red;
+        }
+        .start{
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <form action="/stop" method="post">
+        <input type="hidden" name="userId" id="userId" value="<%= userId %>">
+         <input type="hidden" name="pcName" id="pcName" value="<%= pcName %>">
+        <input type="hidden" name="stopTime" id="stopTimeInput" value="">
+        <input type="hidden" name="startTime" id="startTimeInput" value="">
+    <div>
+        <label for="dropdown">Please Select Your Reason</label>
+        <select id="dropdown" name="dropdown">
+            <% for (let code of codes) { %>
+                <option value="<%= code.code %>"><%= code.description %></option>
+            <% } %>
+        </select>
+    </div>
+    <button type="button" class="stop" id="stopButton" onclick="handleStopButton()">Stop</button>
+    <button style="display: none" class="start" type="submit" onclick="handleStartButton()" id="startButton">Start</button>
+    </form>
+</main>
+
+<script>
+    const stopTimeInput = document.getElementById('stopTimeInput');
+    const startTimeInput = document.getElementById('startTimeInput');
+    const stopButton = document.getElementById('stopButton');
+    const startButton = document.getElementById('startButton');
+    const dropdown = document.getElementById("dropdown");
+    const id = document.getElementById('userId').value;
+    const pcName = document.getElementById('pcName').value;
+
+    function handleStopButton(){
+        stopButton.style.display = "none";
+        stopTimeInput.value = new Date().toISOString();
+        startButton.style.display = 'block';
+    }
+
+    function handleStartButton(){
+        stopButton.style.display= 'block';
+        startButton.style.display = 'none';
+         startTimeInput.value = new Date().toISOString();
+    }
+</script>
+
+</body>
+
+</html>
