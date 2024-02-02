@@ -17,14 +17,16 @@
 </head>
 <body>
 <main>
+    <p>Pc Name :<%= pcName %></p>
+
     <form action="/stop" method="post">
         <input type="hidden" name="userId" id="userId" value="<%= userId %>">
          <input type="hidden" name="pcName" id="pcName" value="<%= pcName %>">
         <input type="hidden" name="stopTime" id="stopTimeInput" value="">
         <input type="hidden" name="startTime" id="startTimeInput" value="">
-    <div>
+    <div style="display: none" id="dropdown-div">
         <label for="dropdown">Please Select Your Reason</label>
-        <select id="dropdown" name="dropdown">
+        <select  id="dropdown" name="dropdown">
             <% for (let code of codes) { %>
                 <option value="<%= code.code %>"><%= code.description %></option>
             <% } %>
@@ -40,7 +42,7 @@
     const startTimeInput = document.getElementById('startTimeInput');
     const stopButton = document.getElementById('stopButton');
     const startButton = document.getElementById('startButton');
-    const dropdown = document.getElementById("dropdown");
+    const dropdownDiv = document.getElementById("dropdown-div");
     const id = document.getElementById('userId').value;
     const pcName = document.getElementById('pcName').value;
 
@@ -48,12 +50,14 @@
         stopButton.style.display = "none";
         stopTimeInput.value = new Date().toISOString();
         startButton.style.display = 'block';
+        dropdownDiv.style.display ='block'
     }
 
     function handleStartButton(){
         stopButton.style.display= 'block';
         startButton.style.display = 'none';
          startTimeInput.value = new Date().toISOString();
+        dropdownDiv.style.display ='none'
     }
 </script>
 

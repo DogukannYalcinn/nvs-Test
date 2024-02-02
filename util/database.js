@@ -1,11 +1,25 @@
-const mysql = require('mysql2');
+const mongodb = require("mongodb");
+const mongoClient = mongodb.MongoClient;
 
-const pool = mysql.createPool({
-    host:'localhost',
-    user:'root',
-    database:'nvsdb',
-    password:'1234'
-});
+let _db ;
+const mongoConnect = (callback) => {
+    mongoClient
+        .connect(
+            `mongodb+srv://TestUser:PDLvuKqDdydueRa9@cluster0.qpgxs8z.mongodb.net/nvs-test?retryWrites=true&w=majority`
+        )
+        .then(client=>{
+            _db=client.db();
+            callback();
+        })
+        .catch(err=>{console.log(err)});
+};
 
-module.exports=pool.promise();
+const getDb = () => {
+    if (_db) {
+        return _db;
+    }
+    throw Error("Database is not found!!");
+};
 
+exports.mongoConnect = mongoConnect;
+exports.getDb =getDb;

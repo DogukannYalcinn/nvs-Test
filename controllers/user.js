@@ -10,27 +10,29 @@ exports.postLogIn = (req,res,next)=>{
     const username = req.body.username;
     const password = req.body.password;
 
-   User.checkUser(username,password).then(result=>{
-       if(result[0].length === 0){
-           res.render('index', {
+   User.checkUser(username,password).then(user=>{
+       if(!user){
+          return  res.render('index', {
                error:'Password or username wrong'
            });
-       }else{
-           User.getReasonCodes().then(codes=>{
-               res.render('stop', {
-                   userId:result[0][0].id,
-                   pcName:result[0][0].pcName,
-                   codes:codes[0]
-               });
-           })
        }
+       User.getReasonCodes().then(codes=>{
+           res.render('stop', {
+               userId:user._id,
+               pcName:user.pcName,
+               codes:codes
+           });
+       })
+
    }).catch(err=>console.log(err));
 
 }
 
 exports.postStopPage = (req,res,next)=>{
-    const stopTime = req.body.stopTime.slice(0, 19).replace("T", " ");
-    const startTime = req.body.startTime.slice(0, 19).replace("T", " ");
+    // const stopTime = req.body.stopTime.slice(0, 19).replace("T", " ");
+    // const startTime = req.body.startTime.slice(0, 19).replace("T", " ");
+    const stopTime = req.body.stopTime;
+    const startTime = req.body.startTime;
     const pcName = req.body.pcName;
     const userId = req.body.userId;
     const reasonCode = req.body.dropdown;
